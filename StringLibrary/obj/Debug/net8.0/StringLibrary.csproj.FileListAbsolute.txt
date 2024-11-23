@@ -1,0 +1,11 @@
+H:\Devops\ClassLibraryProjects\StringLibrary\bin\Debug\net8.0\StringLibrary.deps.json
+H:\Devops\ClassLibraryProjects\StringLibrary\bin\Debug\net8.0\StringLibrary.dll
+H:\Devops\ClassLibraryProjects\StringLibrary\bin\Debug\net8.0\StringLibrary.pdb
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.GeneratedMSBuildEditorConfig.editorconfig
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.AssemblyInfoInputs.cache
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.AssemblyInfo.cs
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.csproj.CoreCompileInputs.cache
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.dll
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\refint\StringLibrary.dll
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\StringLibrary.pdb
+H:\Devops\ClassLibraryProjects\StringLibrary\obj\Debug\net8.0\ref\StringLibrary.dll

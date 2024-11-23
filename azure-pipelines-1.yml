@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main  # This tells Azure DevOps to run the pipeline on changes to the 'main' branch
+
+pool:
+  name: 'Default'  # Specifies the agent pool where the pipeline will run
+  demands:
+    - agent.os -equals Windows  # Ensures the pipeline runs on a Windows agent (but this will be changed for macOS)
+
+steps:
+  - task: UseDotNet@2  # Step 1: Install the .NET SDK (version 8.x)
+    inputs:
+      packageType: 'sdk'
+      version: '8.x'
+      installationPath: $(Agent.ToolsDirectory)/dotnet  # Installation path for .NET SDK
+
+  - task: DotNetCoreCLI@2  # Step 2: Restore NuGet packages for the project
+    inputs:
+      command: restore
+      projects: '**/*.csproj'  # This will search for all .csproj files and restore the packages for them
+
+  - task: DotNetCoreCLI@2  # Step 3: Build the project
+    inputs:
+      command: build
+      projects: '**/*.csproj'  # This will build all projects in the repository
+
+  - task: DotNetCoreCLI@2  # Step 4: Pack the project into a NuGet package
+    inputs:
+      command: pack
+      projects: '**/*.csproj'  # This will package all .csproj projects into NuGet packages
+      versioningScheme: 'off'  # No versioning scheme, it uses the version defined in the .csproj
+      outputDir: '$(Build.ArtifactStagingDirectory)'  # The output folder for the NuGet package
+
+  - task: PublishBuildArtifacts@1  # Step 5: Publish build artifacts (NuGet package)
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Path where the NuGet package is stored
+      ArtifactName: 'drop'  # Artifact name that will be available for download
+
+  - task: AzureArtifactsPublish@1  # Step 6: Publish the NuGet package to Azure Artifacts
+    inputs:
+      feed: 'my-nuget-feed'  # Replace with the name of your Azure Artifacts feed
+      packagePublish: '$(Build.ArtifactStagingDirectory)/*.nupkg'  # Path to the NuGet package to be published
+

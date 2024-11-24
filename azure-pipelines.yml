@@ -3,33 +3,40 @@ trigger:
     include:
       - main
 
+# Specify the self-hosted agent pool
 pool:
-  name: 'Azure Pipelines'  # Use the self-hosted agent pool 
+  name: 'SelfHostedAgentPool'  # Replace with your actual agent pool name
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.x'
+  # Use .NET 8 SDK for build
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '8.x'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
+  # Restore dependencies
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
+  # Build the project
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    projects: '**/*.csproj'
-    versioningScheme: 'off'  # Disable versioning
+  # Pack the project into a NuGet package
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'pack'
+      projects: '**/*.csproj'
+      versioningScheme: 'off'  # Disable versioning for NuGet package
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    publishVstsFeed: 'your-feed-id'  # Azure Artifacts feed
-    packagesToPush: '**/*.nupkg'
+  # Push the NuGet package to Azure Artifacts feed
+  - task: NuGetCommand@2
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: '57eb7b77-6b22-4e6b-9acb-6a1b70707b29/0373a2cd-ae5c-4aeb-9a36-14cd7e4cfdd4'  # Azure Artifacts feed

@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use Ubuntu agent
+  name: 'Azure Pipelines'  # Use the self-hosted agent pool 
 
 steps:
 - task: UseDotNet@2
@@ -26,10 +26,10 @@ steps:
   inputs:
     command: 'pack'
     projects: '**/*.csproj'
-    versioningScheme: 'off'  # Disable versioning (use default version)
+    versioningScheme: 'off'  # Disable versioning
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    publishVstsFeed: 'my_feed'  # Replace with your feed ID
+    publishVstsFeed: 'your-feed-id'  # Azure Artifacts feed
     packagesToPush: '**/*.nupkg'

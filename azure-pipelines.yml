@@ -5,7 +5,7 @@ trigger:
 
 # Specify the self-hosted agent pool
 pool:
-  name: 'SelfHostedAgentPool'  # Replace with your actual agent pool name
+  name: 'Azure Pipelines'  # Replace with your actual agent pool name
 
 steps:
   # Use .NET 8 SDK for build

@@ -1,0 +1,58 @@
+trigger:
+  branches:
+    include:
+      - main  # Trigger pipeline on pushes to the main branch
+
+pool:
+  name: Default  # Use the 'Default' agent pool
+  demands:
+    - agent.name -equals SelfHostedagent  # Specify your self-hosted agent name
+
+variables:
+  # Define any variables here if required
+  buildConfiguration: 'Release'  # Defines the build configuration (Release/Debug)
+  outputDir: '$(Build.ArtifactStagingDirectory)/nuget'  # Path to store the NuGet package
+
+steps:
+# Step 1: Install .NET SDK 8
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'  # Ensure .NET 8 SDK is installed
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+# Step 2: Restore dependencies
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'  # Restore all .csproj files in the repository
+
+# Step 3: Build the project
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'  # Build all .csproj files
+    configuration: $(buildConfiguration)
+
+# Step 4: Pack the project into a NuGet package
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    projects: '**/*.csproj'  # Pack all .csproj files
+    configuration: $(buildConfiguration)
+    outputDir: $(outputDir)  # Store the output NuGet packages here
+
+# Step 5: Publish the NuGet package as an artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(outputDir)  # Path to the packed NuGet package
+    artifactName: 'nuget'  # Name of the artifact
+    publishLocation: 'Container'
+
+# Step 6: Push the NuGet package to Azure Artifacts
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '57eb7b77-6b22-4e6b-9acb-6a1b70707b29/0373a2cd-ae5c-4aeb-9a36-14cd7e4cfdd4'

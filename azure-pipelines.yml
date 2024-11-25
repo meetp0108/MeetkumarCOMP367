@@ -54,6 +54,6 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'  # Replace with your feed ID
-    apiKey: $(System.AccessToken)  # Use the OAuth token for authentication
-
+    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'
+    apiKey: $(System.AccessToken)
+    arguments: '-SkipDuplicate'

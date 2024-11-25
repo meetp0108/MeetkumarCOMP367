@@ -38,12 +38,12 @@ steps:
 # Step 4: Pack the project into a NuGet package
 - task: NuGetCommand@2
   inputs:
-        command: 'pack'
-        packagesToPack: '**/*.csproj'
-        versioningScheme: 'byPrereleaseNumber'
-        majorVersion: '1'
-        minorVersion: '0'
-        patchVersion: '0'
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
 
 # Step 5: Publish the NuGet package as an artifact
 - task: PublishBuildArtifacts@1

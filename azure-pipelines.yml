@@ -50,10 +50,10 @@ steps:
     publishLocation: 'Container'
 
 # Step 6: Push the NuGet package to Azure Artifacts
+
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'  # Replace with your correct feed ID
-    apiKey: $(System.AccessToken)  # Ensure it uses the Azure DevOps pipeline token for authentication
+    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'

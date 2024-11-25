@@ -36,14 +36,12 @@ steps:
     configuration: $(buildConfiguration)
 
 # Step 4: Pack the project into a NuGet package
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj'
-    versioningScheme: 'byPrereleaseNumber'
-    majorVersion: '1'
-    minorVersion: '0'
-    patchVersion: '0'
+    projects: '**/*.csproj'  # Pack all .csproj files
+    configuration: $(buildConfiguration)
+    outputDir: $(outputDir)  # Store the output NuGet packages here
 
 # Step 5: Publish the NuGet package as an artifact
 - task: PublishBuildArtifacts@1

@@ -20,6 +20,7 @@ steps:
     packageType: 'sdk'
     version: '8.x'  # Ensure .NET 8 SDK is installed
     installationPath: $(Agent.ToolsDirectory)/dotnet
+    
 
 # Step 2: Restore dependencies
 - task: DotNetCoreCLI@2
@@ -35,12 +36,14 @@ steps:
     configuration: $(buildConfiguration)
 
 # Step 4: Pack the project into a NuGet package
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
-    command: 'pack'
-    projects: '**/*.csproj'  # Pack all .csproj files
-    configuration: $(buildConfiguration)
-    outputDir: $(outputDir)  # Store the output NuGet packages here
+        command: 'pack'
+        packagesToPack: '**/*.csproj'
+        versioningScheme: 'byPrereleaseNumber'
+        majorVersion: '1'
+        minorVersion: '0'
+        patchVersion: '0'
 
 # Step 5: Publish the NuGet package as an artifact
 - task: PublishBuildArtifacts@1

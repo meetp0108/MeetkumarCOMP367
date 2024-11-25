@@ -19,7 +19,6 @@ steps:
     packageType: 'sdk'
     version: '8.x'  # Ensure .NET 8 SDK is installed
     installationPath: $(Agent.ToolsDirectory)/dotnet
-  
 
 # Step 2: Restore dependencies
 - task: DotNetCoreCLI@2
@@ -46,14 +45,15 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: $(outputDir)  # Path to the packed NuGet package
-    artifactName: 'mpate959'  # Name of the artifact
+    artifactName: 'nuget'  # Name of the artifact
     publishLocation: 'Container'
 
 # Step 6: Push the NuGet package to Azure Artifacts
-
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'
+    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'  # Replace with your feed ID
+    apiKey: $(System.AccessToken)  # Use the OAuth token for authentication
+

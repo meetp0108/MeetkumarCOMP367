@@ -9,7 +9,6 @@ pool:
     - agent.name -equals SelfHostedagent  # Specify your self-hosted agent name
 
 variables:
-  # Define any variables here if required
   buildConfiguration: 'Release'  # Defines the build configuration (Release/Debug)
   outputDir: '$(Build.ArtifactStagingDirectory)/nuget'  # Path to store the NuGet package
 
@@ -20,7 +19,7 @@ steps:
     packageType: 'sdk'
     version: '8.x'  # Ensure .NET 8 SDK is installed
     installationPath: $(Agent.ToolsDirectory)/dotnet
-    
+  
 
 # Step 2: Restore dependencies
 - task: DotNetCoreCLI@2
@@ -56,4 +55,5 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'
+    publishVstsFeed: 'cd102bab-efd7-445b-a84d-709e5a87141f'  # Replace with your correct feed ID
+    apiKey: $(System.AccessToken)  # Ensure it uses the Azure DevOps pipeline token for authentication

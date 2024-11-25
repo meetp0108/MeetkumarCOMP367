@@ -46,7 +46,7 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: $(outputDir)  # Path to the packed NuGet package
-    artifactName: 'nuget'  # Name of the artifact
+    artifactName: 'mpate959'  # Name of the artifact
     publishLocation: 'Container'
 
 # Step 6: Push the NuGet package to Azure Artifacts
